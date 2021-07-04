@@ -1,25 +1,24 @@
-import logo from './logo.svg';
+import React, { createContext, useEffect, useState } from 'react';
+import Multiform from './components/Multiform';
 import './App.css';
 
-function App() {
+export const UserContext = createContext();
+
+const App = () => {
+  const [loggedInUser, setLoggedInUser] = useState({});
+
+  useEffect(() => {
+    const USER = JSON.parse(sessionStorage.getItem('user'));
+    if (USER) {
+      setLoggedInUser(USER);
+    }
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <Multiform />
+    </UserContext.Provider>
   );
-}
+};
 
 export default App;
